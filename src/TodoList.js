@@ -9,6 +9,10 @@ class TodoList extends Component {
       list: [],
       inputValue: ''
     }
+    // 优化 bind(this),提高执行性能
+    this.handleInputChange =this.handleInputChange.bind(this);
+    this.handleBtnClick = this.handleBtnClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   
   // list add
@@ -20,9 +24,9 @@ class TodoList extends Component {
   }
   // input value change
   handleInputChange(e) {
-    this.setState({
-      inputValue: e.target.value
-    })
+      this.setState({
+        inputValue: e.target.value
+      })
   }
   // handleDelete 删除
   handleDelete(index) {
@@ -31,21 +35,33 @@ class TodoList extends Component {
     this.setState({list})
   }
 
+  // 拆分
+  getTodoItems() {
+    return (
+      this.state.list.map((item, index) => {
+        return (
+          <TodoItem 
+            deleteDo={this.handleDelete} 
+            key={index} 
+            content={item} 
+            index={index}
+          />
+        )
+      })
+    )
+  }
+
   // 父组件通过属性的形式向子组件传递参数
   // 子组件通过pros接收父组件传递的参数
   render() {
     return (
       <div>
         <div>
-          <input value={this.state.inputValue} onChange={this.handleInputChange.bind(this)} />
-          <button onClick={this.handleBtnClick.bind(this)}>add</button>
+          <input value={this.state.inputValue} onChange={this.handleInputChange} />
+          <button onClick={this.handleBtnClick}>add</button>
         </div>
         <ul>
-          {
-            this.state.list.map((item, index) => {
-              return <TodoItem delete={this.handleDelete.bind(this)} key={index} content={item} index={index}/>
-            })
-          }
+          { this.getTodoItems() }          
         </ul>
       </div>
     );
