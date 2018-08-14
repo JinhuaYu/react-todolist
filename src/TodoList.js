@@ -8,7 +8,7 @@ class TodoList extends Component {
     this.state = {
       list: [],
       inputValue: ''
-    }
+    }    
   }
   
   // list add
