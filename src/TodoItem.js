@@ -8,7 +8,21 @@ class TodoItem extends Component {
     this.handleDelete = this.handleDelete.bind(this)  
   }
 
+  /**
+   * 避免无畏的render，减少性能损耗
+   * @param {*} nextProps 
+   * @param {*} nextState 
+   */
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.content !== this.props.content) {
+      return true
+    } else {
+      return false
+    }    
+  }
+
   render() {
+    console.log('child render')
     const { content } = this.props
     return (
       <li onClick={this.handleDelete}>

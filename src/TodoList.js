@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import TodoItem from './TodoItem'
+import axios from 'axios'
 
 class TodoList extends Component {
   // constructor 组件创建时调用
   constructor(props) {
     super(props)
     this.state = {
-      list: [],
-      inputValue: ''
+      inputValue: '',
+      list: []
     }    
     // 优化 bind(this),提高执行性能
     this.handleInputChange =this.handleInputChange.bind(this)
@@ -36,6 +37,20 @@ class TodoList extends Component {
     );
   }
 
+  // 在第一次渲染后调用
+  componentDidMount() {
+    axios.get('/api/todolist') // 配合charles使用
+      .then((res) => {
+        // 推荐写法
+        this.setState(() => ({          
+            list: [...res.data]
+        }))
+      })
+      .catch(() => {
+        alert('error')
+      })
+  }
+
   // input value change
   handleInputChange(e) {
     const value = e.target.value  
@@ -57,7 +72,7 @@ class TodoList extends Component {
       this.state.list.map((item, index) => {
         return (
           <TodoItem             
-            key={item} 
+            key={index} 
             content={item} 
             index={index}
             deleteItem={this.handleDelete} 
