@@ -5,7 +5,6 @@ class TodoList extends Component {
   // constructor 组件创建时调用
   constructor(props) {
     super(props)
-    // 当组件的state或者props发生变化时，render函数就会重新执行
     this.state = {
       list: [],
       inputValue: ''
@@ -16,14 +15,8 @@ class TodoList extends Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
 
-  // 在组件即将被挂在到页面的时候自动执行
-  componentWillMount() {
-    console.log('componentWillMount')
-  }
-
   // 数据发生变化时调用
   render() {
-    console.log('render')
     return (
       // React.Fragment 包裹标签 
       <Fragment> 
@@ -32,69 +25,42 @@ class TodoList extends Component {
           <input 
             id="insertArea" 
             value={this.state.inputValue} 
-            onChange={this.handleInputChange} 
-            ref={(input) => {this.input = input}}
+            onChange={this.handleInputChange}
           />
           <button className="btn" onClick={this.handleBtnClick}>提交</button>
         </div>
-        <ul ref={(ul) => {this.ul = ul}}>
+        <ul>
           { this.getTodoItems() }
         </ul>
       </Fragment>
     );
   }
 
-  // 组件挂载到页面之后自动被执行
-  componentDidMount() {
-    console.log('componentDidMount')
-  }
-
-  // 组件被更新之前，自动被执行
-  shouldComponentUpdate() {
-    console.log('shouldComponentUpdate')
-    return true
-  }
-
-  /** 
-   * 组件被更新之前，它会自动执行，但是它在shouldComponentUpdate之后被执行，
-   * 如果shouldComponentUpdate返回true他才执行
-   * 如果返回false，不执行
-   */
-  componentWillUpdate() {
-    console.log('componentWillUpdate')
-  }
-
-  // 组件更新完成之后，它会被执行
-  componentDidUpdate() {
-    console.log('componentDidUpdate')
-  }
-
   // input value change
   handleInputChange(e) {
-    // const value = e.target.value
-    const value = this.input.value
+    const value = e.target.value  
     this.setState(() => ({
       inputValue: value
     }))
   }
-
+  
   // handleDelete 删除
   handleDelete(index) {
     const list = [...this.state.list] // 创建副本， 不要直接修改 state
     list.splice(index, 1)
     this.setState({list})
   }
-
+  
   // 拆分
   getTodoItems() {
     return (
       this.state.list.map((item, index) => {
         return (
-          <TodoItem 
-            deleteItem={this.handleDelete} 
-            key={index} 
+          <TodoItem             
+            key={item} 
             content={item} 
             index={index}
+            deleteItem={this.handleDelete} 
           />
         )
       })
@@ -107,13 +73,7 @@ class TodoList extends Component {
     this.setState((prevState) => ({
       list: [...prevState.list, prevState.inputValue],
       inputValue: ''
-    }), () => {
-      // setState 执行完
-      // 回调函数
-      console.log(this.ul.querySelectorAll('li').length)
-    })
-    // 写在这会先执行
-    // console.log(this.ul.querySelectorAll('li').length)
+    }))
   }
 
 }

@@ -9,11 +9,10 @@ class TodoItem extends Component {
   }
 
   render() {
-    console.log('child render')
-    const { content, test } = this.props
+    const { content } = this.props
     return (
       <li onClick={this.handleDelete}>
-        { test } - { content }
+        { content }
       </li>
     )
   }
@@ -25,32 +24,13 @@ class TodoItem extends Component {
     deleteItem(index)
   }
 
-  /**
-   * 前提条件：一个组件要冲父组件接收参数
-   * 如果这个组件第一次存在于父组件中，不会执行
-   * 如果这个组件之前已经存在于父组件中，才会执行
-   */
-  componentWillReceiveProps() {
-    console.log('child componentWillReceiveProps')
-  }
-
-  //  当这个组件即将被从页面中剔除的时候，会被执行
-  componentWillUnmount() {
-    console.log('child componentWillUnmount')
-  }
 }
 
 // 属性校验
 TodoItem.propTypes = {
-  test: PropTypes.string.isRequired,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   deleteItem: PropTypes.func,
   index: PropTypes.number
-}
-
-// 属性默认值
-TodoItem.defaultProps = {
-  test: 'hello world'
 }
 
 export default TodoItem;
