@@ -1,9 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-//css
-import './css/style.css'
+import { Provider } from 'react-redux'
+import store from './store'
 
-// App组件，大写字母开头
 import TodoList from './TodoList'
 
-ReactDOM.render(<TodoList />, document.getElementById('root'))
+const App = (
+  <Provider store={store}>
+    <TodoList></TodoList>
+  </Provider>
+)
+
+ReactDOM.render(
+  App,
+  document.getElementById('root')
+)
